@@ -16,6 +16,7 @@ C#
 D#
 
 - Doctrine (不翻)
+- Docblock Annotations (注解)
 
 E#
 
@@ -25,6 +26,11 @@ E#
 G#
 
 - Github (不翻)
+
+M#
+
+- mutator (修改器)
+- Metadata (元数据)
 
 O#
 

@@ -159,21 +159,18 @@ Doctrine 的公共接口是 EntityManager，它为您的实体提供了完整的
     $ vendor/bin/doctrine orm:schema-tool:drop --force
     $ vendor/bin/doctrine orm:schema-tool:create
 
-Or use the update functionality:
+或使用更新功能：
 
 ::
 
     $ vendor/bin/doctrine orm:schema-tool:update --force
 
-The updating of databases uses a Diff Algorithm for a given
-Database Schema, a cornerstone of the ``Doctrine\DBAL`` package,
-which can even be used without the Doctrine ORM package.
+数据库的更新使用给定数据库结构的差异算法，这是 Doctrine\DBAL 包的基石，甚至可以在没有 Doctrine ORM 包的情况下使用。
 
-Starting with the Product
+从创建 Product Entity 开始
 -------------------------
 
-We start with the simplest entity, the Product. Create a ``src/Product.php`` file to contain the ``Product``
-entity definition:
+我们从最简单的 entity “Product” 开始。创建一个 ``src/Product.php`` 文件以包含 ``Product`` entity 的定义：
 
 .. code-block:: php
 
@@ -206,26 +203,13 @@ entity definition:
         }
     }
 
-Note that all fields are set to protected (not public) with a 
-mutator (getter and setter) defined for every field except $id. 
-The use of mutators allows Doctrine to hook into calls which 
-manipulate the entities in ways that it could not if you just 
-directly set the values with ``entity#field = foo;``
+请注意，所有字段都设置为 protected（而不是 public），除了为 $id 之外的每个字段定义的修改器 mutator（getter 和 setter）。使用修改器(mutator)可以让 Doctrine 挂钩调用这些操作的方式，如果你只是直接设置值与 ``entity#field = foo;``
 
-The id field has no setter since, generally speaking, your code 
-should not set this value since it represents a database id value. 
-(Note that Doctrine itself can still set the value using the 
-Reflection API instead of a defined setter function)
+id 字段没有 setter，因为一般来说，你的代码不应该设置这个值，因为它代表一个数据库 id 值。 （注意，Doctrine 本身仍然可以使用 Reflection API 而不是定义的 setter 函数来设置值）
 
-The next step for persistence with Doctrine is to describe the
-structure of the ``Product`` entity to Doctrine using a metadata
-language. The metadata language describes how entities, their
-properties and references should be persisted and what constraints
-should be applied to them.
+使用 Doctrine 进行持久化的下一步是使用元数据语言来描述使用 Doctrine 的 ``Product`` 实体的结构。元数据语言描述了实体，它们的属性和引用应该如何被持久化，以及应该对它们应用什么约束。
 
-Metadata for entities are configured using a XML, YAML or Docblock Annotations.
-This Getting Started Guide will show the mappings for all Mapping Drivers.
-References in the text will be made to the XML mapping.
+实体的元数据使用 XML，YAML 或 注解(Docblock Annotations) 方式进行配置。本入门指南将提供所有映射驱动程序的映射的例子。文中将引用 XML 映射。
 
 .. configuration-block::
 
