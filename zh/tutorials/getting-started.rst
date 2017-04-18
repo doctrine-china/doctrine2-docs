@@ -1,70 +1,46 @@
 开始入门
 =============================
 
-This guide covers getting started with the Doctrine ORM. After working
-through the guide you should know:
+本指南涵盖了 Doctrine ORM 入门相关内容。 通过学习本教程后你应该知道：
 
-- How to install and configure Doctrine by connecting it to a database
-- Mapping PHP objects to database tables
-- Generating a database schema from PHP objects
-- Using the ``EntityManager`` to insert, update, delete and find
-  objects in the database.
+- 如何安装和配置 Doctrine 连接到数据库
+- 将 PHP 对象映射到数据库表
+- 根据 PHP 对象生成数据库
+- 使用 ``EntityManager`` 在数据库中完成插入，更新，删除和查找对象的操作。
 
-Guide Assumptions
+如果你还没有使用过 Doctrine ORM
 -----------------
 
-This guide is designed for beginners that haven't worked with Doctrine ORM
-before. There are some prerequesites for the tutorial that have to be
-installed:
+本指南是为以前没有使用过 Doctrine ORM 初学者设计的。使用的一些前提：
 
 - PHP (latest stable version)
 - Composer Package Manager (`Install Composer
   <http://getcomposer.org/doc/00-intro.md>`_)
 
-The code of this tutorial is `available on Github <https://github.com/doctrine/doctrine2-orm-tutorial>`_.
+本教程的代码可在`Github <https://github.com/doctrine/doctrine2-orm-tutorial>`_上获得。
 
 .. note::
 
-    This tutorial assumes you work with **Doctrine 2.4** and above.
-    Some of the code will not work with lower versions.
+    本教程假定您使用 **Doctrine 2.4** 及以上版本。一些代码将不适用于较低版本。
 
-What is Doctrine?
+什么是 Doctrine ？
 -----------------
 
-Doctrine 2 is an `object-relational mapper (ORM)
-<http://en.wikipedia.org/wiki/Object-relational_mapping>`_ for PHP 5.4+ that
-provides transparent persistence for PHP objects. It uses the Data Mapper
-pattern at the heart, aiming for a complete separation of your domain/business
-logic from the persistence in a relational database management system.
+Doctrine 2 是一个 PHP 5.4+ 的 ` ORM（Object-relational mapper）<http://en.wikipedia.org/wiki/Object-relational_mapping>`_，为 PHP 对象提供透明的持久性。它使用 Data Mapper 模式，旨在将您的领域/业务逻辑层与数据持久层完全分离。
 
-The benefit of Doctrine for the programmer is the ability to focus
-on the object-oriented business logic and worry about persistence only
-as a secondary problem. This doesn't mean persistence is downplayed by Doctrine
-2, however it is our belief that there are considerable benefits for
-object-oriented programming if persistence and entities are kept
-separated.
+Doctrine 对程序员的好处是使其能够专注于面向对象的业务逻辑，而不用太多精力关注持久层。 但这并不意味着 Doctrine 2 的持久层被淡化了，主要我们认为如果持久层和实体保持分离，那么对面向对象编程有相当大的好处。
 
-What are Entities?
-~~~~~~~~~~~~~~~~~~
+什么是 Entity ？
+-----------------
 
-Entities are PHP Objects that can be identified over many requests
-by a unique identifier or primary key. These classes don't need to extend any
-abstract base class or interface. An entity class must not be final
-or contain final methods. Additionally it must not implement
-**clone** nor **wakeup**, unless it :doc:`does so safely <../cookbook/implementing-wakeup-or-clone>`.
+Entity 是可以通过唯一标识符或主键在许多请求上标识的 PHP 对象。 这些类不需要扩展任何抽象基类或接口。 Entity 类不能含有 **final** 属性或 **final** 方法。 此外，它不能实现 **clone** 和 **wakeup**，除非它 `安全地执行<../cookbook/implementing-wakeup-or-clone>`。
 
-An entity contains persistable properties. A persistable property
-is an instance variable of the entity that is saved into and retrieved from the database
-by Doctrine's data mapping capabilities.
+Entity 包含持久属性。 持久化属性是通过 Doctrine 的数据映射功能保存到数据库，并从数据库中检索的实体的实例变量。
 
 An Example Model: Bug Tracker
 -----------------------------
 
-For this Getting Started Guide for Doctrine we will implement the
-Bug Tracker domain model from the
-`Zend\_Db\_Table <http://framework.zend.com/manual/1.12/en/zend.db.adapter.html>`_
-documentation. Reading their documentation we can extract the
-requirements:
+对于本教程入门指南，我们将从 `Zend_Db_Table <http://framework.zend.com/manual/1.12/en/zend.db.adapter.html>`_ 文档中实现 Bug Tracker 域模型。 阅读他们的文档我们可以提取要求：
 
 -  A Bug has a description, creation date, status, reporter and
    engineer
@@ -76,12 +52,10 @@ requirements:
 -  A User can see all his reported or assigned Bugs.
 -  Bugs can be paginated through a list-view.
 
-Project Setup
+安装
 -------------
 
-Create a new empty folder for this tutorial project, for example
-``doctrine2-tutorial`` and create a new file ``composer.json`` with
-the following contents:
+为本教程项目创建一个新的空文件夹，例如 ``doctrine2-tutorial`` 并创建一个包含以下内容的新文件 ``composer.json`` ：
 
 ::
 
@@ -96,17 +70,16 @@ the following contents:
     }
 
 
-Install Doctrine using the Composer Dependency Management tool, by calling:
+使用 Composer 依赖关系管理工具安装 Doctrine，通过调用下面命令：
 
 ::
 
     $ composer install
 
-This will install the packages Doctrine Common, Doctrine DBAL, Doctrine ORM,
-Symfony YAML and Symfony Console into the `vendor` directory. The Symfony 
-dependencies are not required by Doctrine but will be used in this tutorial.
+这条命令将在 vendor 目录中安装 Doctrine Common，Doctrine DBAL，Doctrine ORM，Symfony YAML和Symfony Console。 Symfony 依赖关系不是 Doctrine 所要求的，而是在本教程中需要使用。
 
-Add the following directories:
+接下来添加以下目录：
+
 ::
 
     doctrine2-tutorial
@@ -115,15 +88,10 @@ Add the following directories:
     |   `-- yaml
     `-- src
 
-Obtaining the EntityManager
+获取 EntityManager
 ---------------------------
 
-Doctrine's public interface is the EntityManager, it provides the
-access point to the complete lifecycle management of your entities
-and transforms entities from and back to persistence. You have to
-configure and create it to use your entities with Doctrine 2. I
-will show the configuration steps and then discuss them step by
-step:
+Doctrine 的公共接口是 EntityManager，它为您的实体提供了完整的生命周期管理的接入点，并将实体转换为持久性。您必须配置并创建它以使用您的实体与 Doctrine 2。我将显示配置步骤，然后一步一步讨论：
 
 .. code-block:: php
 
@@ -150,35 +118,20 @@ step:
     // obtaining the entity manager
     $entityManager = EntityManager::create($conn, $config);
 
-The first require statement sets up the autoloading capabilities of Doctrine
-using the Composer autoload.
+第一个 require 语句使用 Composer 自动加载设置了 Doctrine 的自动加载功能。
 
-The second block consists of the instantiation of the ORM
-``Configuration`` object using the Setup helper. It assumes a bunch
-of defaults that you don't have to bother about for now. You can
-read up on the configuration details in the
-:doc:`reference chapter on configuration <../reference/configuration>`.
+第二个块由使用安装程序助手实例化的 ORM ``Configuration`` 对象组成。 它承担了一大堆默认值，因次您现在无须担心。 您可以在配置参考 (:doc:`reference chapter on configuration <../reference/configuration>`) 一章中了解配置的详细信息。
 
-The third block shows the configuration options required to connect
-to a database, in my case a file-based sqlite database. All the
-configuration options for all the shipped drivers are given in the
-`DBAL Configuration section of the manual <http://www.doctrine-project.org/documentation/manual/2_0/en/dbal>`_.
+第三个代码块表示的是连接到数据库所需的配置选项，在我的例子中是一个基于文件的 sqlite 数据库。 所有支持的数据库驱动的配置选项在本手册的 `DBAL <http://www.doctrine-project.org/documentation/manual/2_0/en/dbal>`_ 配置部分中给出。
 
-The last block shows how the ``EntityManager`` is obtained from a
-factory method.
+最后一块表示如何从工厂方法获取 `EntityManager`。
 
-Generating the Database Schema
+生成数据库模式
 ------------------------------
 
-Now that we have defined the Metadata mappings and bootstrapped the
-EntityManager we want to generate the relational database schema
-from it. Doctrine has a Command-Line Interface that allows you to
-access the SchemaTool, a component that generates the required
-tables to work with the metadata.
+现在我们已经定义了元数据映射，并引导我们要从中生成关系数据库结构的 EntityManager。 Doctrine 提供了一个命令行接口，允许您访问 SchemaTool，该组件可生成所需的表以使用元数据。
 
-For the command-line tool to work a cli-config.php file has to be
-present in the project root directory, where you will execute the
-doctrine command. Its a fairly simple file:
+如果要使用命令行工具，cli-config.php 文件必须存在于项目根目录中，然后你就可以在里面执行 doctrine 提供的相关命令。它是一个相当简单的文件：
 
 .. code-block:: php
 
@@ -188,22 +141,18 @@ doctrine command. Its a fairly simple file:
     
     return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($entityManager);
 
-You can then change into your project directory and call the
-Doctrine command-line tool:
+然后，您就可以进入项目的根目录并使用 Doctrine 的命令行工具：
 
 ::
 
     $ cd project/
     $ vendor/bin/doctrine orm:schema-tool:create
 
-At this point no entity metadata exists in `src` so you will see a message like 
-"No Metadata Classes to process." Don't worry, we'll create a Product entity and 
-corresponding metadata in the next section.
+在此基础上，由于 `src` 中不存在任何实体元数据，因此当你执行完命令后，程序会提示类似 “No Metadata Classes to process.” 的错误信息。但是不用担心，我们将在下一节中创建一个 Product 实体和相应的元数据。
 
-You should be aware that during the development process you'll periodically need 
-to update your database schema to be in sync with your Entities metadata.
+你应该注意，在开发过程中，你应定期更新数据库结构以与实体元数据保持同步。
 
-You can easily recreate the database:
+现在你可以轻松地重新创建数据库：
 
 ::
 
