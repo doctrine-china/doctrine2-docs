@@ -3,6 +3,10 @@
 
 按照英文字母排序
 
+A#
+
+- APC (不翻)
+
 B#
 
 - Bug (不翻)
@@ -20,8 +24,8 @@ D#
 
 E#
 
-- EntityManager (不翻)
-- Entity (不翻)
+- EntityManager (实体管理器)
+- Entity (实体)
 
 G#
 
@@ -31,10 +35,16 @@ M#
 
 - mutator (修改器)
 - Metadata (元数据)
+- Memcache (不翻)
+- Memcached (不翻)
 
 O#
 
 - ORM (不翻)
+
+R#
+
+- Redis (不翻)
 
 S#
 
@@ -47,4 +57,8 @@ V#
 R#
 
 - Repository (不翻)
+
+X#
+
+- Xcache (不翻)
 
