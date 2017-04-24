@@ -1,10 +1,10 @@
 23. 缓存
-=======
+=========
 
 Doctrine 在 Common 包下面提供了一些缓存驱动并且实现了一些流行的缓存，如：APC, Memcache, Xcache。也提供 ArrayCache 驱动，ArrayCache 驱动存储在 php 的数组里面。显然，缓存不会在不同的请求中存在。但是对于开发环境测试非常有用。
 
 23.1. 缓存驱动
--------------
+--------------
 
 缓存驱动的接口定义在 ``Doctrine\Common\Cache\Cache``。所有的缓存驱动继承类 ``Doctrine\Common\Cache\AbstractCache``，该类实现了 Cache 接口。
 
@@ -341,5 +341,4 @@ ChainCache 本身扩展了 CacheProvider 接口，因此可以创建链条链。
 需要注意当使用缓存出现缓存碰撞，如果你有一个并发非常高的网站。如果缓存不存在，就会生成缓存信息并保存。现在，如果你的网站有100个请求同时的检查到了缓存不存在并且尝试保存相同的缓存信息，那么将锁住 APC，Xcache 等等，这将会导致一些问题。一个现成的解决方案是通过预先的填充缓存，而不是通过用户请求来填充缓存。
 
 你可以阅读 `这个 <http://notmysock.org/blog/php/user-cache-timebomb.html>`_ 博客获得更多信息。
-
 
